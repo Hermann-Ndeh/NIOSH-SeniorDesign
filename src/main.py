@@ -1,6 +1,6 @@
 from optimal_number_of_drones import OptimalNumberOfDrones
 from optimal_drone_path import OptimalPath
-from gsd_calculation import GSD
+from src.gsd_calculation import GSD
 
 class MainClass:
     def __init__(self):
