@@ -4,6 +4,7 @@ from PIL import Image
 from PIL import ImageDraw
 import networkx as nx
 import math
+import csv
 
 class DefineGrayScale:
     def __init__(self, grid_size=5, num_grids=400):
@@ -24,7 +25,7 @@ class DefineGrayScale:
         image = Image.fromarray(self.image_array)
 
         # image.show()  
-        image.save('img/grayscale_grid_image.png')
+        image.save('../img/grayscale_grid_image.png')
 
         print("Grayscale values for each grid:")
         print(self.grid_values)
@@ -47,8 +48,17 @@ class DefineGrayScale:
         result_image = Image.fromarray(image_rgb_array)
 
         # result_image.show()
-        result_image.save('img/colored_grids_image.png')
+        result_image.save('../img/colored_grids_image.png')
         self.separate_red_pixels(image_rgb_array)
+        
+    def distance_matrix(self, pixel_coords):
+        sorted_coords = sorted(pixel_coords, key=lambda coord:coord[0])
+        coords_array = np.array(sorted_coords)
+        distance_matrix = np.linalg.norm(coords_array[:, np.newaxis] - coords_array, axis=2)
+        with open('distance_matrix.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(distance_matrix)
+        print(distance_matrix)
 
     def separate_red_pixels(self, image_rgb_array):
         white_image_array = np.full(image_rgb_array.shape, 255, dtype=np.uint8)
@@ -63,10 +73,11 @@ class DefineGrayScale:
 
         result_image = Image.fromarray(white_image_array)
 
-        result_image.save('img/red_separated_image.png')
+        result_image.save('../img/red_separated_image.png')
 
         print("Red pixel coordinates:")
         print(self.red_coordinates)
+        self.distance_matrix(self.red_coordinates)
 
         self.connect_isolated_red_pixels(image_rgb_array)
 
@@ -103,4 +114,4 @@ class DefineGrayScale:
             if closest_node:
                 draw.line([closest_edge1, closest_edge2], fill=(0, 0, 255), width=1)
 
-        result_image.save('img/connected_red_pixels.png')
+        result_image.save('../img/connected_red_pixels.png')
