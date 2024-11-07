@@ -9,6 +9,7 @@ class IdentifyHazards:
         self.min_threshold = min_threshold
         self.max_threshold = max_threshold
         self.red_grid_count = 0  # Counter for red grids
+        self.red_grids_info = []  # Store info of red grids (label and center coordinates)
 
     def highlight_grids(self):
         image = Image.open(self.image_path)
@@ -21,6 +22,8 @@ class IdentifyHazards:
 
         rgb_image = gray_image.convert('RGB')
         draw = ImageDraw.Draw(rgb_image, 'RGBA')
+
+        label = 1  # Starting label for grid numbering
 
         for row in range(self.grid_size[0]):
             for col in range(self.grid_size[1]):
@@ -37,7 +40,20 @@ class IdentifyHazards:
                     draw.rectangle([left, top, right, bottom], fill=(255, 0, 0, 80))
                     self.red_grid_count += 1  # Increment the counter for red grids
 
-        rgb_image.save(self.potential_hazards_path)
+                    # Calculate the center coordinates of the grid cell
+                    center_x = (left + right) // 2
+                    center_y = (top + bottom) // 2
 
+                    # Append label and center coordinates to red_grids_info
+                    self.red_grids_info.append({"label": label, "center": (center_x, center_y)})
+
+                # Label the grid
+                draw.text((left + 5, top + 5), str(label), fill="white")
+                label += 1  # Increment label for the next grid
+
+        rgb_image.save(self.potential_hazards_path)
+        
     def count_red_grids(self):
         return self.red_grid_count  # Return the count of red grids
+    def grid_info(self):
+        return self.red_grids_info
