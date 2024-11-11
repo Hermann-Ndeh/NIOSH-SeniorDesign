@@ -1,8 +1,8 @@
 from grid_and_grayscale import DefineGrayScale
 from red_hazards import IdentifyHazards
+from nearest_neighbor import NearestNeighbor
 import os
 import json
-
 
 def check_directory_exists(directory):
     if not os.path.exists(directory):
@@ -40,8 +40,17 @@ def process_image_files(image_folder, grayscale_folder, potential_hazards_folder
             # Save red grid information to a JSON file
             with open(grid_coords_path, "w") as json_file:
                 json.dump(grid_coords, json_file, indent=4)
-            
-    
+
+def get_nearest_neighbor(directory):
+    for filename in os.listdir(directory):
+        if filename != '.DS_Store':
+            with open(os.path.join(directory, filename), 'r') as f:
+                data = json.load(f)
+            nn = NearestNeighbor(data)
+            nearest_neighbors = nn.get_nearest_neighbors()
+            if filename == 'DJI_0554.json':
+                for neighbor_info in enumerate(nearest_neighbors):
+                    print(f"{neighbor_info}")
 
 def main():
     image_folder = 'drone_images'
@@ -50,6 +59,7 @@ def main():
     grid_coords_folder = 'hazard_grid_coordinates'
 
     process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder)
+    get_nearest_neighbor(grid_coords_folder)
 
 if __name__ == "__main__":
     main()

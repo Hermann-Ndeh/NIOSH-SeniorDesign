@@ -27,5 +27,3 @@ class DefineGrayScale:
 # process_image('drone-images/DJI_0647.JPG', grid_size=(20, 20))  
 # process_image('drone-images/DJI_0948.JPG', grid_size=(20, 20))  
 # process_image('drone-images/DJI_0978.JPG', grid_size=(20, 20), )  
-
-
