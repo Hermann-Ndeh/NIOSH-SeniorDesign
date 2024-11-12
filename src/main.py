@@ -41,25 +41,47 @@ def process_image_files(image_folder, grayscale_folder, potential_hazards_folder
             with open(grid_coords_path, "w") as json_file:
                 json.dump(grid_coords, json_file, indent=4)
 
-def get_nearest_neighbor(directory):
-    for filename in os.listdir(directory):
-        if filename != '.DS_Store':
-            with open(os.path.join(directory, filename), 'r') as f:
+def get_nearest_neighbor(grid_coords_folder, potential_hazards_folder, connected_images_folder):
+    check_directory_exists(connected_images_folder)
+
+    for filename in os.listdir(grid_coords_folder):
+        if filename.endswith('.json'):
+            json_path = os.path.join(grid_coords_folder, filename)
+            with open(json_path, 'r') as f:
                 data = json.load(f)
-            nn = NearestNeighbor(data)
+            
+            # Use the grayscale image with red nodes as the base image for drawing connectors
+            grayscale_image_filename = filename.replace('.json', '.jpg')
+            grayscale_image_path = os.path.join(potential_hazards_folder, grayscale_image_filename)
+            
+            # Check if the grayscale image with red nodes exists
+            if not os.path.exists(grayscale_image_path):
+                print(f"Grayscale image file {grayscale_image_path} does not exist.")
+                continue
+
+            # Initialize NearestNeighbor with the grayscale image path
+            nn = NearestNeighbor(data, grayscale_image_path)
             nearest_neighbors = nn.get_nearest_neighbors()
+            
             if filename == 'DJI_0554.json':
-                for neighbor_info in enumerate(nearest_neighbors):
+                for neighbor_info in nearest_neighbors:
                     print(f"{neighbor_info}")
+            
+            # Draw connectors and save the output image to the connected images folder
+            nn.connect_neighbors()
+            output_image_filename = filename.replace('.json', '_connected.jpg')
+            output_image_path = os.path.join(connected_images_folder, output_image_filename)
+            nn.save_image(output_image_path)
 
 def main():
     image_folder = 'drone_images'
     grayscale_folder = 'grayscale_drone_images'
     potential_hazards_folder = 'potential_hazards'
     grid_coords_folder = 'hazard_grid_coordinates'
+    connected_images_folder = 'connected_neighbors'
 
     process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder)
-    get_nearest_neighbor(grid_coords_folder)
+    get_nearest_neighbor(grid_coords_folder, potential_hazards_folder, connected_images_folder)
 
 if __name__ == "__main__":
     main()
