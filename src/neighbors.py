@@ -103,4 +103,3 @@ class IdentifyNeighbors:
             cluster_centers[i] = (sum(x_coords) / len(x_coords), sum(y_coords) / len(y_coords))
 
         return cluster_centers
-
