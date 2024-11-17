@@ -28,3 +28,4 @@ class DefineGrayScale:
         # Save the image as 16-bit grayscale to the output path
         final_image = image.convert('I;16')
         final_image.save(self.grayscale_path)
+

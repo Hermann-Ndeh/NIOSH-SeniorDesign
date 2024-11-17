@@ -78,3 +78,4 @@ class IdentifyHazards:
     def red_grids_lists(self):
         return self.red_grids
     
+    
