@@ -7,25 +7,24 @@ class DefineGrayScale:
         self.grid_size = grid_size
 
     def process_image(self):  
-        image = Image.open(self.image_path)
-        gray_image = image.convert('L')
-        width, height = gray_image.size
+        # Open the image directly as an 8-bit grayscale (L) image for easier manipulation
+        image = Image.open(self.image_path).convert('L')
+        width, height = image.size
+
+        # Calculate cell width and height based on the grid size
         cell_width = width // self.grid_size[1]
         cell_height = height // self.grid_size[0]
-        draw = ImageDraw.Draw(gray_image)
+
+        # Draw grid lines directly onto the grayscale image
+        draw = ImageDraw.Draw(image)
         for i in range(1, self.grid_size[0]):
             y = i * cell_height
-            draw.line([(0, y), (width, y)], fill=0, width=1) 
+            draw.line([(0, y), (width, y)], fill=0) 
 
         for i in range(1, self.grid_size[1]):
             x = i * cell_width
-            draw.line([(x, 0), (x, height)], fill=0, width=1)  
+            draw.line([(x, 0), (x, height)], fill=0)  
 
-        gray_image.save(self.grayscale_path)
-        # gray_image.show()
-
-# process_image('drone-images/DJI_0647.JPG', grid_size=(20, 20))  
-# process_image('drone-images/DJI_0948.JPG', grid_size=(20, 20))  
-# process_image('drone-images/DJI_0978.JPG', grid_size=(20, 20), )  
-
-
+        # Save the image as 16-bit grayscale to the output path
+        final_image = image.convert('I;16')
+        final_image.save(self.grayscale_path)
