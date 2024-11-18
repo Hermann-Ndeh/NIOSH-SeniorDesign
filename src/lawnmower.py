@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 
 class DroneSurvey:
     '''
-    DroneSurvey initializes a grid and assigns drones to subgrids if there is a potential hazard that has
-    been identified. The drones' path is created using the Lawnmower Algorithm (an inefficient path planning
-    algorithm but ensures 100% coverage of the construction site). 
+    DroneSurvey initializes a grid and assigns drones to subgrids if there is a potential hazard that has been identified. The drones' path 
+    is created using the Lawnmower Algorithm (an inefficient path planning algorithm but ensures 100% coverage of the construction site). 
 
     Authors:
         Hermann Ndeh
@@ -46,8 +45,7 @@ class DroneSurvey:
 
     def assign_drones_to_grid(self):
         '''
-        Assigns drones to evenly spaced areas of the grid and generates their paths using the Lawnmower 
-        Algorithm.
+        Assigns drones to evenly spaced areas of the grid and generates their paths using the Lawnmower Algorithm.
 
         Returns:
             set: A set of all the drone paths.
@@ -116,8 +114,8 @@ class DroneSurvey:
 
     def print_paths(self):
         '''
-        Displays each path a drone follows, including its start point, end point, and the total grids each
-        drone has passed through their flyover.
+        Displays each path a drone follows, including its start point, end point, and the total grids each drone has passed through their 
+        flyover.
         '''
 
         for drone_id, path in self.drone_paths.items():

@@ -6,19 +6,25 @@ from PIL import Image
 import numpy as np
 import os
 
-"""
-
-
-@author Hermann Ndeh
-@author Misk Hussain
-@author Sharon Gilman
-"""
 def check_directory_exists(directory):
-    """Ensure the directory exists, create it if it doesn't."""
+    '''Ensure the directory exists, create it if it doesn't.'''
     if not os.path.exists(directory):
         os.makedirs(directory)
 
 def process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder, drone_paths_folder, row_and_column_grids, number_of_groups):
+    '''
+    Calls each method to process an image, identify hazards, and generate a path plan for each drone.
+    
+    Parameters:
+        image_folder (string): The path to the folder where the raw drone images are contained.
+        grayscale_folder (string): The path to the folder where the processed grayscale images are saved to.
+        potential_hazards_folder (string): The path to the folder where the processed potential hazard images are saved to.
+        grid_coords_folder (string): The path to the folder where a node's coordinates are saved to.
+        drone_paths_folder (string): The path to the folder where the drone's path is saved to.
+        row_and_column_grids (int): The size of the grid (an x by x grid).
+        number_of_groups (int): The number of groups an image contains.
+    '''
+    
     # Check if output directories exist
     check_directory_exists(grayscale_folder)
     check_directory_exists(potential_hazards_folder)

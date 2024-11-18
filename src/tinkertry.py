@@ -10,8 +10,7 @@ def ensure_directory_exists(directory):
 
 class ImageProcessor:
     '''
-    ImageProcessor processes images from an image folder by converting them into a grayscale
-    image and identifying potential hazards. 
+    ImageProcessor processes images from an image folder by converting them into a grayscale image and identifying potential hazards. 
 
     Authors:
         Hermann Ndeh
@@ -21,14 +20,13 @@ class ImageProcessor:
 
     def __init__(self, image_folder='drone-images', grayscale_folder='grayscale_drone_images', potential_hazards_folder='potential_hazards'):
         '''
-        Initialize the class with the providied image folder, grayscale folder, and potential
-        hazards folder.
+        Initialize the class with the providied image folder, grayscale folder, and potential hazards folder.
 
         Parameters:
             image_folder (string): The path to the drone images.
             grayscale_folder (string): The path to save the processed grayscale images to.
-            potential_hazards_folder (string): The path to save the processed images to. Images in this
-                folder have highlighted red grids where potential hazards may reside.
+            potential_hazards_folder (string): The path to save the processed images to. Images in this folder have highlighted red grids 
+                where potential hazards may reside.
         '''
 
         self.image_folder = image_folder
@@ -65,8 +63,7 @@ class ImageProcessor:
 
     def process_image(self, filename):
         '''
-        Processes the provided image. First converts the image to grayscale and then identifies
-        potential hazards.
+        Processes the provided image. First converts the image to grayscale and then identifies potential hazards.
 
         Parameters:
             filename (string): The name of the image to process.

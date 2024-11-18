@@ -5,9 +5,8 @@ from matplotlib import cm
 
 class ClusterPathPlanner:
     '''
-    ClusterPathPlanner defines a drone's path by using the nearest neighbor algorithm. The
-    paths are presented to the user in the terminal and displayed on an image using 
-    matplotlib.
+    ClusterPathPlanner defines a drone's path by using the nearest neighbor algorithm. The paths are presented to the user in the terminal 
+    and displayed on an image using matplotlib.
 
     Authors:
         Hermann Ndeh
@@ -31,8 +30,7 @@ class ClusterPathPlanner:
 
     def split_clusters(self):
         '''
-        Converts the centroid coordinates to an array so the nearest neighbor algorithm can be
-        run on the file.
+        Converts the centroid coordinates to an array so the nearest neighbor algorithm can be run on the file.
 
         Returns:
             set: A set of the groups of red subgrids contained in the image.
@@ -54,8 +52,7 @@ class ClusterPathPlanner:
 
     def nearest_neighbor_path(self, group):
         '''
-        Performs the nearest neighbor algorithm to determine a group of red subgrid's nearest
-        neighbor.
+        Performs the nearest neighbor algorithm to determine a group of red subgrid's nearest neighbor.
 
         Parameters:
             group (set): An individual group of red subgrids.

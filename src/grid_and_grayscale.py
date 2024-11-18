@@ -2,10 +2,9 @@ from PIL import Image, ImageDraw
 
 class DefineGrayScale:
     '''
-    DefineGrayscale opens a given image and converts into an 16-bit grayscale image that can be used
-    across the program. The process_image method converts the image into an 8-bit grayscale image with
-    grids drawn directly on the image to make identifying potential hazards easier. Converted images
-    are saved in the 'grayscale_drone_images' folder as .JPG files.
+    DefineGrayscale opens a given image and converts into an 16-bit grayscale image that can be used across the program. The process_image 
+    method converts the image into an 8-bit grayscale image with grids drawn directly on the image to make identifying potential hazards 
+    easier. Converted images are saved in the 'grayscale_drone_images' folder as .JPG files.
 
     Authors:
         Hermann Ndeh
@@ -29,9 +28,8 @@ class DefineGrayScale:
 
     def process_image(self):
         '''
-        Processes an image first into an 8-bit grayscale image, displays the grid directly
-        on the image, and saves the final image into a 16-bit grayscale to the specified 
-        file path.
+        Processes an image first into an 8-bit grayscale image, displays the grid directly on the image, and saves the final image into a 
+        16-bit grayscale to the specified file path.
         '''
         
         # Open the image directly as an 8-bit grayscale (L) image for easier manipulation

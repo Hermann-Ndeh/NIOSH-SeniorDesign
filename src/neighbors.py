@@ -54,8 +54,7 @@ class IdentifyNeighbors:
 
     def compute_connected_set(self, start, b, valid_numbers):
         '''
-        Compute the full set of connected grids starting from a specific grid, 
-        filtering to include only numbers in `valid_numbers`.
+        Compute the full set of connected grids starting from a specific grid, filtering to include only numbers in `valid_numbers`.
 
         Parameters:
             start (int): The starting grid number.

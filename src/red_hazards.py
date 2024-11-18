@@ -3,7 +3,7 @@ import numpy as np
 
 class IdentifyHazards:
     '''
-    
+    IdentifyHazards processes a grayscale image and identifies potential areas where a hazard may be on a construction site.
 
     Authors:
         Hermann Ndeh
@@ -13,9 +13,8 @@ class IdentifyHazards:
 
     def __init__(self, image_path, potential_hazards_path, grid_size, min_threshold=0, max_threshold=65535):
         '''
-        Initialize the class with the provided image paths to the raw image and the path to the folder
-        where the processed image will be saved to. Sets the minimum and maximum thresholds for
-        identifying potential hazards.
+        Initialize the class with the provided image paths to the raw image and the path to the folder where the processed image will be 
+        saved to. Sets the minimum and maximum thresholds for identifying potential hazards.
 
         Parameters:
             image_path (string): The path to the raw image.
@@ -37,8 +36,7 @@ class IdentifyHazards:
 
     def highlight_grids(self):
         '''
-        Uses the 16-bit grayscale image to determine which grids are within the minimum threshold
-        and maximum threshold.
+        Uses the 16-bit grayscale image to determine which grids are within the minimum threshold and maximum threshold.
         '''
         
         image = Image.open(self.image_path)
