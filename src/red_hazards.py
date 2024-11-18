@@ -2,7 +2,29 @@ from PIL import Image, ImageDraw
 import numpy as np
 
 class IdentifyHazards:
+    '''
+    
+
+    Authors:
+        Hermann Ndeh
+        Misk Hussain
+        Sharon Gilman
+    '''
+
     def __init__(self, image_path, potential_hazards_path, grid_size, min_threshold=0, max_threshold=65535):
+        '''
+        Initialize the class with the provided image paths to the raw image and the path to the folder
+        where the processed image will be saved to. Sets the minimum and maximum thresholds for
+        identifying potential hazards.
+
+        Parameters:
+            image_path (string): The path to the raw image.
+            potential_hazards_path (string): The path to the image with identified potential hazards.
+            grid_size (tuple): The size of the grid.
+            min_threshold (int): The minimum threshold to identify potential hazards.
+            max_threshold (int): The maximum threshold to identify potential hazards.
+        '''
+
         self.image_path = image_path
         self.potential_hazards_path = potential_hazards_path
         self.grid_size = grid_size
@@ -14,6 +36,11 @@ class IdentifyHazards:
         
 
     def highlight_grids(self):
+        '''
+        Uses the 16-bit grayscale image to determine which grids are within the minimum threshold
+        and maximum threshold.
+        '''
+        
         image = Image.open(self.image_path)
         gray_image = image.convert('I;16')
         grayscale_array = np.array(gray_image, dtype=np.float32) * (65535 / 255)
@@ -70,11 +97,32 @@ class IdentifyHazards:
         rgb_image.save(self.potential_hazards_path)
         
     def count_red_grids(self):
+        '''
+        Returns the number of red grids contained in a processed image.
+
+        Returns:
+            int: The number of red grids contained in the processed image.
+        '''
+
         return self.red_grid_count  # Return the count of red grids
 
     def grid_info(self):
+        '''
+        Returns a list of coordinates of the red grids contained in the processed image.
+
+        Returns:
+            list: The list of each red grid's coordinates.
+        '''
+        
         return self.red_grids_cords
     
     def red_grids_lists(self):
+        '''
+        Returns a list of all the red grids contained in the processed image.
+
+        Returns:
+            list: The list of red grids displayed on an image.
+        '''
+
         return self.red_grids
     

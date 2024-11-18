@@ -6,6 +6,13 @@ from PIL import Image
 import numpy as np
 import os
 
+"""
+
+
+@author Hermann Ndeh
+@author Misk Hussain
+@author Sharon Gilman
+"""
 def check_directory_exists(directory):
     """Ensure the directory exists, create it if it doesn't."""
     if not os.path.exists(directory):

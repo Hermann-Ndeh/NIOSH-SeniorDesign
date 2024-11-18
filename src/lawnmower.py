@@ -2,7 +2,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class DroneSurvey:
+    '''
+    DroneSurvey initializes a grid and assigns drones to subgrids if there is a potential hazard that has
+    been identified. The drones' path is created using the Lawnmower Algorithm (an inefficient path planning
+    algorithm but ensures 100% coverage of the construction site). 
+
+    Authors:
+        Hermann Ndeh
+        Misk Hussain
+        Sharon Gilman
+    '''
+
     def __init__(self, grid_size=50, subgrid_size=5, num_drones=1):
+        '''
+        Initialize the class with the grid size, subgrid size, and the given number of drones.
+
+        Parameters:
+            grid_size (int): The size of the grid.
+            subgrid_size (int): The size of the subgrid.
+            num_drones (int): The number of drones being used.
+        '''
+
         self.grid_size = grid_size
         self.subgrid_size = subgrid_size
         self.num_drones = num_drones
@@ -10,9 +30,14 @@ class DroneSurvey:
         self.drone_paths = self.assign_drones_to_grid()
         
     def grid_init(self):
-        """
-        Initializes the main grid and divides it into subgrids.
-        """
+        '''
+        Initialize the main grid and divides it into subgrids.
+
+        Returns:
+            numpy array: The grid.
+            numpy array: The subgrids of the main grid.
+        '''
+
         grid = np.zeros((self.grid_size, self.grid_size), dtype=int)
         subgrid_dim = self.grid_size // self.subgrid_size
         # Reshape grid into subgrids
@@ -20,9 +45,14 @@ class DroneSurvey:
         return grid, subgrids
 
     def assign_drones_to_grid(self):
-        """
-        Assigns drones to evenly spaced areas of the grid and generates their paths.
-        """
+        '''
+        Assigns drones to evenly spaced areas of the grid and generates their paths using the Lawnmower 
+        Algorithm.
+
+        Returns:
+            set: A set of all the drone paths.
+        '''
+
         grid_width_per_drone = self.grid_size // self.num_drones
         drone_paths = {}
 
@@ -35,9 +65,17 @@ class DroneSurvey:
         return drone_paths
 
     def generate_lawnmower_path(self, start_col, end_col):
-        """
-        Generates a 'lawnmower' path for a drone to cover its assigned grid area.
-        """
+        '''
+        Generates a Lawnmower path for a drone to ensure it covers the assigned grid area.
+
+        Parameters:
+            start_col (int): the starting column of the drone's path.
+            end_col (int): the ending column of the drone's path.
+        
+        Returns:
+            list: The Lawnmower path for a single drone.
+        '''
+
         path = []
         for row in range(self.grid_size):
             if row % 2 == 0:
@@ -49,9 +87,10 @@ class DroneSurvey:
         return path
 
     def plot_paths(self):
-        """
-        Plots the drone paths and the smaller subgrids on the grid using matplotlib.
-        """
+        '''
+        Plots each drone path and the smaller subgrids on the grid using matplotlib.
+        '''
+
         plt.figure(figsize=(10, 10))
         # Set the origin to 'lower' to invert the y-axis
         plt.imshow(self.grid, cmap='Greys', origin='lower')
@@ -76,9 +115,11 @@ class DroneSurvey:
         plt.show()
 
     def print_paths(self):
-        """
-        Prints each drone's path, including start point, end point, and total grids passed.
-        """
+        '''
+        Displays each path a drone follows, including its start point, end point, and the total grids each
+        drone has passed through their flyover.
+        '''
+
         for drone_id, path in self.drone_paths.items():
             start_point = path[0]
             end_point = path[-1]

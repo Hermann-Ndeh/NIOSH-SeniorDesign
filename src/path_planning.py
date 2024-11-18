@@ -4,7 +4,25 @@ import matplotlib.pyplot as plt
 from matplotlib import cm 
 
 class ClusterPathPlanner:
+    '''
+    ClusterPathPlanner defines a drone's path by using the nearest neighbor algorithm. The
+    paths are presented to the user in the terminal and displayed on an image using 
+    matplotlib.
+
+    Authors:
+        Hermann Ndeh
+        Misk Hussain
+        Sharon Gilman
+    '''
+
     def __init__(self, centroids, num_groups):
+        '''
+        Initialize the class with the given centroids and number of groups of drones.
+
+        Parameters:
+            centroids (list): The coordinates of each node. Used to determine the center of a node.
+            num_groups (int): The number of groups of drones to deploy.
+        '''
 
         self.centroids = centroids
         self.num_groups = num_groups
@@ -12,6 +30,14 @@ class ClusterPathPlanner:
         self.paths = None
 
     def split_clusters(self):
+        '''
+        Converts the centroid coordinates to an array so the nearest neighbor algorithm can be
+        run on the file.
+
+        Returns:
+            set: A set of the groups of red subgrids contained in the image.
+        '''
+
         # Convert centroid coordinates to an array for KMeans
         coords = np.array(list(self.centroids.values()))
         
@@ -27,6 +53,17 @@ class ClusterPathPlanner:
         return self.groups
 
     def nearest_neighbor_path(self, group):
+        '''
+        Performs the nearest neighbor algorithm to determine a group of red subgrid's nearest
+        neighbor.
+
+        Parameters:
+            group (set): An individual group of red subgrids.
+
+        Returns:
+            list: The list of nodes a group is required to travel to.
+        '''
+
         coords = {node: self.centroids[node] for node in group}
         unvisited = set(coords.keys())
         path = []
@@ -45,6 +82,13 @@ class ClusterPathPlanner:
         return path
 
     def plan_paths(self):
+        '''
+        Calls on the nearest_neighbor_path method to determine a node's nearest neighbor.
+
+        Returns:
+            set: The set of all paths contained on the image.
+        '''
+
         if self.groups is None:
             raise ValueError("Groups have not been split. Call split_clusters() first.")
 
@@ -55,6 +99,13 @@ class ClusterPathPlanner:
         return self.paths
 
     def plot_paths(self):
+        '''
+        Displays each group's path to identify potential hazards.
+
+        Returns:
+            plot: A plot of the paths contained in the image through matplotlib.
+        '''
+
         if self.groups is None or self.paths is None:
             raise ValueError("Groups or paths are not available. Ensure both are computed.")
         
@@ -97,9 +148,11 @@ class ClusterPathPlanner:
         
         return plt
 
-
-
     def print_paths(self):
+        '''
+        Displays the paths to the user via the terminal.
+        '''
+
         if self.paths is None:
             raise ValueError("Paths have not been planned. Call plan_paths() first.")
         

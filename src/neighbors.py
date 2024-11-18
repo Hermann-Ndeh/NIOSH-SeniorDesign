@@ -1,18 +1,27 @@
 class IdentifyNeighbors:
+    '''
+    IdentifyNeighbors applies the nearest neighbor algorithm to determine a node's nearest neighbor.
+
+    Authors:
+        Hermann Ndeh
+        Misk Hussain
+        Sharon Gilman
+    '''
 
     def __init__(self, grid_dimensions, grid_numbers):
-        """
+        '''
         Initialize the class with grid dimensions and grid numbers.
 
         Parameters:
             grid_dimensions (tuple): (width, height) of the entire grid area.
             grid_numbers (int): Total number of grids.
-        """
+        '''
+
         self.grid_dimensions = grid_dimensions
         self.grid_numbers = grid_numbers
 
     def get_adjacent_grids(self, n, b):
-        """
+        '''
         Get the grid numbers adjacent to the grid labeled n in a b x b grid.
 
         Parameters:
@@ -21,7 +30,8 @@ class IdentifyNeighbors:
 
         Returns:
             set: A set of adjacent grid numbers.
-        """
+        '''
+
         adjacent = set()
         
         # Check top neighbor
@@ -43,7 +53,7 @@ class IdentifyNeighbors:
         return adjacent
 
     def compute_connected_set(self, start, b, valid_numbers):
-        """
+        '''
         Compute the full set of connected grids starting from a specific grid, 
         filtering to include only numbers in `valid_numbers`.
 
@@ -54,7 +64,8 @@ class IdentifyNeighbors:
 
         Returns:
             set: A set of connected grids starting from `start` that are in `valid_numbers`.
-        """
+        '''
+
         visited = set()  # Track visited grids
         to_visit = {start}  # Start with the given grid
 
@@ -69,7 +80,7 @@ class IdentifyNeighbors:
         return visited
 
     def compute_cluster_centers(self, clusters, b):
-        """
+        '''
         Compute the center point for each cluster of connected grids.
 
         Parameters:
@@ -79,7 +90,8 @@ class IdentifyNeighbors:
         Returns:
             dict: A dictionary mapping cluster indices (starting from 1) to their center coordinates.
                 Example: {1: (x_center, y_center), 2: (x_center, y_center), ...}
-        """
+        '''
+
         grid_width, grid_height = self.grid_dimensions
         cell_width = grid_width / b
         cell_height = grid_height / b
