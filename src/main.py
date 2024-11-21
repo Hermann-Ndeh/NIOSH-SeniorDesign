@@ -5,13 +5,14 @@ from path_planning import ClusterPathPlanner
 from PIL import Image
 import numpy as np
 import os
+import math
 
 def check_directory_exists(directory):
     '''Ensure the directory exists, create it if it doesn't.'''
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-def process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder, drone_paths_folder, row_and_column_grids, number_of_groups):
+def process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder, drone_paths_folder, row_and_column_grids):
     '''
     Calls each method to process an image, identify hazards, and generate a path plan for each drone.
     
@@ -37,9 +38,11 @@ def process_image_files(image_folder, grayscale_folder, potential_hazards_folder
             grayscale_path = os.path.join(grayscale_folder, filename)
             potential_hazards_path = os.path.join(potential_hazards_folder, filename)
             basename, extension = os.path.splitext(filename)
-            basename = f'{basename}.txt'
-            grid_coords_path = os.path.join(grid_coords_folder, basename)
+            txt_file = f'{basename}.txt'
+            gif_file = f'{basename}.gif'
+            grid_coords_path = os.path.join(grid_coords_folder, txt_file)
             drone_paths = os.path.join(drone_paths_folder, filename)
+            drone_path_gifs = os.path.join(drone_paths_folder, gif_file)
 
             # Process grayscale
             grayscale = DefineGrayScale(image_path, grayscale_path, grid_size=(row_and_column_grids, row_and_column_grids))
@@ -67,7 +70,7 @@ def process_image_files(image_folder, grayscale_folder, potential_hazards_folder
                 for key, value in grid_coords_dictionary.items():
                     text_file.write(f"{key}: {value}\n")
             
-            red_grids = potential_hazards.red_grids_lists()
+            red_grids = potential_hazards.red_grids_list()
 
             neighbors = IdentifyNeighbors((row_and_column_grids, row_and_column_grids), red_grids)
 
@@ -105,15 +108,21 @@ def process_image_files(image_folder, grayscale_folder, potential_hazards_folder
                     cluster_centers[key] = grid_coords_dictionary[first_element]
                     key += 1 
 
+            number_of_groups = math.ceil(num_red_grids/(0.75*40))
+            print(cluster_centers)
+            if len(cluster_centers) < number_of_groups:
+                number_of_groups = len(cluster_centers)
             path_planner = ClusterPathPlanner(cluster_centers, number_of_groups)
             path_planner.split_clusters()
             path_planner.plan_paths()
             path_planner.print_paths()
-            defined_paths = path_planner.plot_paths()
+            defined_paths = path_planner.plot_paths(f'{potential_hazards_folder}/{filename}', f'{drone_paths_folder}/{filename}')
+            path_planner.animate_paths(save_to=drone_path_gifs)
+
 
             # Ensure the drone_paths folder exists before saving the plot
             check_directory_exists(drone_paths_folder)
-            defined_paths.savefig(drone_paths)
+            # defined_paths.savefig(drone_paths)
 
 def main():
     image_folder = 'drone_images'
@@ -122,9 +131,9 @@ def main():
     grid_coords_folder = 'hazard_grid_coordinates'
     drone_paths_folder = 'drone_paths'
     row_and_column_grids = 30
-    number_of_groups = 5
+    # number_of_groups = math.ceil(136/(0.25*12))
 
-    process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder, drone_paths_folder, row_and_column_grids, number_of_groups)
+    process_image_files(image_folder, grayscale_folder, potential_hazards_folder, grid_coords_folder, drone_paths_folder, row_and_column_grids)
 
 def calculate_dynamic_thresholds(grayscale_path, base_min=10000, base_max=20000):
     # Load the grayscale image

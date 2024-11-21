@@ -22,6 +22,16 @@ class DefineGrayScale:
             grid_size (tuple): (width, height) of the entire grid area.
         '''
         
+    
+    def __init__(self, image_path, grayscale_path, grid_size=(20, 20)):
+        """
+        Initialize the class with image path, output path, and grid size.
+
+        Parameters:
+            image_path (str): Path to the input image.
+            grayscale_path (str): Path to save the processed grayscale image.
+            grid_size (tuple): Number of grid cells (rows, columns).
+        """
         self.image_path = image_path
         self.grayscale_path = grayscale_path
         self.grid_size = grid_size
@@ -33,23 +43,31 @@ class DefineGrayScale:
         '''
         
         # Open the image directly as an 8-bit grayscale (L) image for easier manipulation
+        """
+        Process the image by converting it to grayscale, overlaying a grid,
+        and saving it as a 16-bit grayscale image.
+        """
+        # Open the image and convert to 8-bit grayscale ('L')
         image = Image.open(self.image_path).convert('L')
         width, height = image.size
 
-        # Calculate cell width and height based on the grid size
+        # Calculate cell dimensions
         cell_width = width // self.grid_size[1]
         cell_height = height // self.grid_size[0]
 
-        # Draw grid lines directly onto the grayscale image
+        # Draw grid lines on the image
         draw = ImageDraw.Draw(image)
+
+        # Draw horizontal grid lines
         for i in range(1, self.grid_size[0]):
             y = i * cell_height
-            draw.line([(0, y), (width, y)], fill=0) 
+            draw.line([(0, y), (width, y)], fill=0)
 
+        # Draw vertical grid lines
         for i in range(1, self.grid_size[1]):
             x = i * cell_width
-            draw.line([(x, 0), (x, height)], fill=0)  
+            draw.line([(x, 0), (x, height)], fill=0)
 
-        # Save the image as 16-bit grayscale to the output path
+        # Convert to 16-bit grayscale ('I;16') and save the output
         final_image = image.convert('I;16')
         final_image.save(self.grayscale_path)

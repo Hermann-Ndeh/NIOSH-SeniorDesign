@@ -23,6 +23,9 @@ class IdentifyNeighbors:
     def get_adjacent_grids(self, n, b):
         '''
         Get the grid numbers adjacent to the grid labeled n in a b x b grid.
+        """
+        Get the grid numbers adjacent to the grid labeled `n` in a `b x b` grid,
+        including diagonal neighbors.
 
         Parameters:
             n (int): The grid number (1-indexed).
@@ -33,33 +36,40 @@ class IdentifyNeighbors:
         '''
 
         adjacent = set()
-        
-        # Check top neighbor
-        if n > b:  # Not in the first row
+
+        # Check direct neighbors
+        if n > b:  # Top
             adjacent.add(n - b)
-        
-        # Check bottom neighbor
-        if n <= b * (b - 1):  # Not in the last row
+        if n <= b * (b - 1):  # Bottom
             adjacent.add(n + b)
-        
-        # Check left neighbor
-        if (n - 1) % b != 0:  # Not in the first column
+        if (n - 1) % b != 0:  # Left
             adjacent.add(n - 1)
-        
-        # Check right neighbor
-        if n % b != 0:  # Not in the last column
+        if n % b != 0:  # Right
             adjacent.add(n + 1)
-        
+
+        # Check diagonal neighbors
+        if n > b and (n - 1) % b != 0:  # Top-left
+            adjacent.add(n - b - 1)
+        if n > b and n % b != 0:  # Top-right
+            adjacent.add(n - b + 1)
+        if n <= b * (b - 1) and (n - 1) % b != 0:  # Bottom-left
+            adjacent.add(n + b - 1)
+        if n <= b * (b - 1) and n % b != 0:  # Bottom-right
+            adjacent.add(n + b + 1)
+
         return adjacent
 
     def compute_connected_set(self, start, b, valid_numbers):
         '''
         Compute the full set of connected grids starting from a specific grid, filtering to include only numbers in `valid_numbers`.
+        """
+        Compute the set of connected grids starting from a specific grid,
+        including only numbers in `valid_numbers`.
 
         Parameters:
             start (int): The starting grid number.
             b (int): The size of the grid (b x b).
-            valid_numbers (set): The set of valid grid numbers to include.
+            valid_numbers (set): Set of valid grid numbers to include.
 
         Returns:
             set: A set of connected grids starting from `start` that are in `valid_numbers`.
@@ -67,12 +77,14 @@ class IdentifyNeighbors:
 
         visited = set()  # Track visited grids
         to_visit = {start}  # Start with the given grid
+        
+        visited = set()
+        to_visit = {start}
 
         while to_visit:
             current = to_visit.pop()
             if current not in visited:
                 visited.add(current)
-                # Add neighbors of the current grid that are in valid_numbers and not visited
                 neighbors = self.get_adjacent_grids(current, b)
                 to_visit.update(neighbors & valid_numbers - visited)
 
@@ -94,11 +106,9 @@ class IdentifyNeighbors:
         grid_width, grid_height = self.grid_dimensions
         cell_width = grid_width / b
         cell_height = grid_height / b
-
         cluster_centers = {}
 
-        for i, cluster in enumerate(clusters, start=1):  # Start cluster labeling from 1
-            # Compute the average x and y coordinates of all grids in the cluster
+        for i, cluster in enumerate(clusters, start=1):
             x_coords = []
             y_coords = []
 
@@ -110,7 +120,9 @@ class IdentifyNeighbors:
                 x_coords.append(center_x)
                 y_coords.append(center_y)
 
-            # Calculate cluster center
-            cluster_centers[i] = (sum(x_coords) / len(x_coords), sum(y_coords) / len(y_coords))
+            cluster_centers[i] = (
+                sum(x_coords) / len(x_coords),
+                sum(y_coords) / len(y_coords),
+            )
 
         return cluster_centers
